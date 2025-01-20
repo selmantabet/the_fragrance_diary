@@ -9,6 +9,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  Map data = {};
+
   @override
   void initState() {
     super.initState();
@@ -17,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _navigateToHome() async {
-    String data = await Future.delayed(Duration(seconds: 2), () {
+    String delayedData = await Future.delayed(Duration(seconds: 2), () {
       return "Some data";
     });
     Navigator.pushReplacement(
@@ -25,13 +27,13 @@ class _SplashScreenState extends State<SplashScreen> {
       MaterialPageRoute(builder: (context) => HomePageWidget()),
     );
     Navigator.pushNamed(context, '/home');
-    print("Got data $data");
+    print("Got data $delayedData");
   }
 
   getData() async {
     Response response =
         await get(Uri.parse('https://jsonplaceholder.typicode.com/todos/1'));
-    Map data = jsonDecode(response.body);
+    data = jsonDecode(response.body);
     print("Response: ${response.body}");
     print("Response Type: ${response.body.runtimeType}");
     print("Data Type: ${data.runtimeType}");
