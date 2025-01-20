@@ -24,6 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
       context,
       MaterialPageRoute(builder: (context) => HomePageWidget()),
     );
+    // or Navigator.pushNamed(context, '/home');
     print("Got data $data");
   }
 

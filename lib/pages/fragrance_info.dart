@@ -6,11 +6,10 @@ class Fragrance {
 
   Fragrance({required this.name, this.description = ''});
 
-  Future<void> getFragranceData() async {
+  Future<Map<String, String>> getFragranceData() async {
     //TODO: Implement fetching data from Firebase
     return Future.delayed(Duration(seconds: 2), () {
-      name = 'Fragrance Name';
-      description = 'Fragrance Description';
+      return {'name': name, 'description': 'Fragrance Description'};
     });
   }
 }
@@ -18,20 +17,43 @@ class Fragrance {
 class FragranceInfoWidget extends StatelessWidget {
   FragranceInfoWidget({super.key});
 
-  final Map<String, String> data = {
-    'name': 'Fragrance Name',
-    'description': 'Fragrance Description',
-  };
+  final Future<Map<String, String>> data =
+      Fragrance(name: "AdG").getFragranceData();
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        child: Column(children: <Widget>[
-      Card(
-        child: Placeholder(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Fragrance Info'),
+        centerTitle: true,
+        backgroundColor: Colors.red,
       ),
-      Text(data['name'] ?? 'Default Name'),
-      Text(data['description'] ?? 'Default Description'),
-    ]));
+      body: SafeArea(
+        child: Card(
+            child: Column(children: <Widget>[
+          Card(
+            child: Placeholder(),
+          ),
+          FutureBuilder<Map<String, String>>(
+            future: data,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                final data = snapshot.data!;
+                return Column(
+                  children: [
+                    Text(data['name'] ?? 'Default Name'),
+                    Text(data['description'] ?? 'Default Description'),
+                  ],
+                );
+              }
+            },
+          ),
+        ])),
+      ),
+    );
   }
 }
