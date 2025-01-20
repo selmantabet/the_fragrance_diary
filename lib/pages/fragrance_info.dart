@@ -12,13 +12,20 @@ class Fragrance {
       return {'name': name, 'description': 'Fragrance Description'};
     });
   }
+
+  void initializeData() async {
+    final fragrance = Fragrance(name: 'Fragrance Name');
+    Map<String, String> data = await fragrance.getFragranceData();
+
+    print('Fragrance Name: ${data['name']}');
+    print('Fragrance Description: ${data['description']}');
+  }
 }
 
 class FragranceInfoWidget extends StatelessWidget {
   FragranceInfoWidget({super.key});
 
-  final Future<Map<String, String>> data =
-      Fragrance(name: "AdG").getFragranceData();
+  final futureData = Fragrance(name: 'Fragrance Name').getFragranceData();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +42,7 @@ class FragranceInfoWidget extends StatelessWidget {
             child: Placeholder(),
           ),
           FutureBuilder<Map<String, String>>(
-            future: data,
+            future: futureData,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return CircularProgressIndicator();

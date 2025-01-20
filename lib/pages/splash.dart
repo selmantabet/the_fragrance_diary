@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
       context,
       MaterialPageRoute(builder: (context) => HomePageWidget()),
     );
-    // or Navigator.pushNamed(context, '/home');
+    Navigator.pushNamed(context, '/home');
     print("Got data $data");
   }
 
@@ -57,6 +57,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            SizedBox(height: 20),
+            CircularProgressIndicator()
           ],
         ),
       ),
