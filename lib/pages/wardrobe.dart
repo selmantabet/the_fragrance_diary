@@ -76,12 +76,19 @@ class _WardrobeWidgetState extends State<WardrobeWidget> {
         future: locator<DatabaseService>().queryAllRows(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return CircularProgressIndicator.adaptive();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
-            return ListView.builder(
+            return GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 15,
+              ),
               itemCount: snapshot.data?.length ?? 0,
+              padding: EdgeInsets.all(10),
+              shrinkWrap: true,
               itemBuilder: (context, index) {
                 Fragrance fragrance = snapshot.data![index];
                 return Card(
