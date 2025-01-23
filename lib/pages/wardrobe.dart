@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:the_fragrance_diary/dependency_injection.dart';
 import 'package:the_fragrance_diary/models/fragrance.dart';
 import 'package:the_fragrance_diary/services/database_service.dart';
 
@@ -11,7 +11,6 @@ class WardrobeWidget extends StatefulWidget {
 }
 
 class _WardrobeWidgetState extends State<WardrobeWidget> {
-  final DatabaseService _databaseService = DatabaseService();
   String _newFragranceName = '';
   String _newFragranceDescription = '';
   @override
@@ -51,7 +50,7 @@ class _WardrobeWidgetState extends State<WardrobeWidget> {
                                   _newFragranceName == '') {
                                 return;
                               }
-                              _databaseService.insertFragrance({
+                              locator<DatabaseService>().insertFragrance({
                                 'name': _newFragranceName,
                                 'description': _newFragranceDescription,
                                 'imagePath': 'assets/images/fragrance.png'
@@ -74,7 +73,7 @@ class _WardrobeWidgetState extends State<WardrobeWidget> {
 
   Widget _fragranceList() {
     return FutureBuilder<List<Fragrance>>(
-        future: _databaseService.queryAllRows(),
+        future: locator<DatabaseService>().queryAllRows(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
@@ -91,7 +90,8 @@ class _WardrobeWidgetState extends State<WardrobeWidget> {
                     subtitle: Text(fragrance.description),
                     trailing: IconButton(
                         onPressed: () {
-                          _databaseService.deleteFragrance(fragrance.id);
+                          locator<DatabaseService>()
+                              .deleteFragrance(fragrance.id);
                           setState(() {});
                         },
                         icon: Icon(Icons.delete)),
