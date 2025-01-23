@@ -41,6 +41,7 @@ class FragranceInfoWidget extends StatelessWidget {
           Card(
             child: Placeholder(),
           ),
+          SizedBox(height: 20),
           FutureBuilder<Map<String, String>>(
             future: futureData,
             builder: (context, snapshot) {
